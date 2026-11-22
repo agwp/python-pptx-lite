@@ -544,6 +544,11 @@ class DescribePartFactory:
         return instance_mock(request, Part)
 
 
+@pytest.fixture(scope="class")
+def content_type_map():
+    return _ContentTypeMap.from_xml(testfile_bytes("expanded_pptx", "[Content_Types].xml"))
+
+
 class Describe_ContentTypeMap:
     """Unit-test suite for `pptx.opc.package._ContentTypeMap` objects."""
 
@@ -606,12 +611,6 @@ class Describe_ContentTypeMap:
         with pytest.raises(TypeError) as e:
             content_type_map["/part/name1.xml"]
         assert str(e.value) == "_ContentTypeMap key must be <type 'PackURI'>, got str"
-
-    # fixtures ---------------------------------------------
-
-    @pytest.fixture(scope="class")
-    def content_type_map(self):
-        return _ContentTypeMap.from_xml(testfile_bytes("expanded_pptx", "[Content_Types].xml"))
 
 
 class Describe_Relationships:

@@ -241,6 +241,11 @@ class Describe_PhysPkgReader:
         return class_mock(request, "pptx.opc.serialized._ZipPkgReader")
 
 
+@pytest.fixture(scope="class")
+def dir_pkg_reader():
+    return _DirPkgReader(dir_pkg_path)
+
+
 class Describe_DirPkgReader:
     """Unit-test suite for `pptx.opc.serialized._DirPkgReader` objects."""
 
@@ -259,11 +264,10 @@ class Describe_DirPkgReader:
             dir_pkg_reader[PackURI("/ppt/foobar.xml")]
         assert str(e.value) == "\"no member '/ppt/foobar.xml' in package\""
 
-    # --- fixture components -------------------------------
 
-    @pytest.fixture(scope="class")
-    def dir_pkg_reader(self):
-        return _DirPkgReader(dir_pkg_path)
+@pytest.fixture(scope="class")
+def zip_pkg_reader():
+    return _ZipPkgReader(zip_pkg_path)
 
 
 class Describe_ZipPkgReader:
@@ -289,12 +293,6 @@ class Describe_ZipPkgReader:
         assert len(blobs) == 38
         assert "/ppt/presentation.xml" in blobs
         assert "/ppt/_rels/presentation.xml.rels" in blobs
-
-    # --- fixture components -------------------------------
-
-    @pytest.fixture(scope="class")
-    def zip_pkg_reader(self):
-        return _ZipPkgReader(zip_pkg_path)
 
 
 class Describe_PhysPkgWriter:
